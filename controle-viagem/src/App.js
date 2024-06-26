@@ -61,13 +61,17 @@ const App = () => {
   };
 
   const handleDeleteExpense = (index) => {
-    setExpenses(prevExpenses => {
-      const updatedExpenses = prevExpenses.filter((_, i) => i !== index);
+    // Mostrar um prompt de confirmação
+    const confirmDelete = window.confirm('Tem certeza que deseja deletar este item?');
+    if (confirmDelete) {
+      setExpenses(prevExpenses => {
+        const updatedExpenses = prevExpenses.filter((_, i) => i !== index);
 
-      updateTotals(updatedExpenses);
+        updateTotals(updatedExpenses);
 
-      return updatedExpenses;
-    });
+        return updatedExpenses;
+      });
+    }
   };
 
   const handleEditExpense = (index) => {
