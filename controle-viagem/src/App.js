@@ -18,9 +18,16 @@ const App = () => {
     if (exchangeRate !== null) {
       const amountFloat = parseFloat(amount);
       const quantityFloat = parseFloat(quantity);
-      const amountInDestination = amountFloat * quantityFloat * exchangeRate;
+      const amountInDestination = amountFloat * exchangeRate;
 
-      const newExpense = { description, quantity: quantityFloat, amount: amountFloat, currencyFrom, currencyTo, amountInDestination };
+      const newExpense = {
+        description,
+        quantity: quantityFloat,
+        amount: amountFloat,
+        currencyFrom,
+        currencyTo,
+        amountInDestination
+      };
 
       if (editingIndex !== null) {
         setExpenses(prevExpenses => {
@@ -28,11 +35,7 @@ const App = () => {
             index === editingIndex ? newExpense : expense
           );
 
-          const updatedTotalOrigin = updatedExpenses.reduce((sum, expense) => sum + expense.amount * expense.quantity, 0);
-          const updatedTotalDestination = updatedExpenses.reduce((sum, expense) => sum + expense.amountInDestination, 0);
-
-          setTotalOrigin(updatedTotalOrigin);
-          setTotalDestination(updatedTotalDestination);
+          updateTotals(updatedExpenses);
 
           return updatedExpenses;
         });
@@ -40,11 +43,8 @@ const App = () => {
       } else {
         setExpenses(prevExpenses => {
           const updatedExpenses = [...prevExpenses, newExpense];
-          const updatedTotalOrigin = updatedExpenses.reduce((sum, expense) => sum + expense.amount * expense.quantity, 0);
-          const updatedTotalDestination = updatedExpenses.reduce((sum, expense) => sum + expense.amountInDestination, 0);
 
-          setTotalOrigin(updatedTotalOrigin);
-          setTotalDestination(updatedTotalDestination);
+          updateTotals(updatedExpenses);
 
           return updatedExpenses;
         });
@@ -56,18 +56,15 @@ const App = () => {
       setCurrencyFrom('BRL');
       setCurrencyTo('BRL');
     } else {
-      alert('Error fetching exchange rate');
+      alert('Erro ao buscar taxa de câmbio');
     }
   };
 
   const handleDeleteExpense = (index) => {
     setExpenses(prevExpenses => {
       const updatedExpenses = prevExpenses.filter((_, i) => i !== index);
-      const updatedTotalOrigin = updatedExpenses.reduce((sum, expense) => sum + expense.amount * expense.quantity, 0);
-      const updatedTotalDestination = updatedExpenses.reduce((sum, expense) => sum + expense.amountInDestination, 0);
 
-      setTotalOrigin(updatedTotalOrigin);
-      setTotalDestination(updatedTotalDestination);
+      updateTotals(updatedExpenses);
 
       return updatedExpenses;
     });
@@ -81,6 +78,23 @@ const App = () => {
     setCurrencyFrom(expense.currencyFrom);
     setCurrencyTo(expense.currencyTo);
     setEditingIndex(index);
+  };
+
+  const updateTotals = (updatedExpenses) => {
+    const updatedTotalOrigin = updatedExpenses.reduce((sum, expense) => sum + expense.amount * expense.quantity, 0);
+    const updatedTotalDestination = updatedExpenses.reduce((sum, expense) => sum + expense.amountInDestination * expense.quantity, 0);
+
+    setTotalOrigin(updatedTotalOrigin);
+    setTotalDestination(updatedTotalDestination);
+  };
+
+  // Função para formatar a exibição de um produto
+  const formatProduct = (product) => {
+    const { description, quantity, amount, currencyFrom, currencyTo, amountInDestination } = product;
+    const formattedAmountOrigin = `${(amount * quantity).toFixed(2)} ${currencyFrom}`;
+    const formattedAmountDestiny = `${(amountInDestination * quantity).toFixed(2)} ${currencyTo}`;
+
+    return `${description} (Qtd. ${quantity}): ${formattedAmountOrigin} => ${formattedAmountDestiny}`;
   };
 
   return (
@@ -150,7 +164,7 @@ const App = () => {
       <ul id="expense-list" className="list-group mt-4">
         {expenses.map((expense, index) => (
           <li key={index} className="list-group-item d-flex justify-content-between align-items-center">
-            {`${expense.description} (Qtd. ${expense.quantity}): ${expense.amount.toFixed(2)} ${expense.currencyFrom} => ${expense.amountInDestination.toFixed(2)} ${expense.currencyTo}`}
+            {formatProduct(expense)}
             <div>
               <button className="btn btn-warning btn-sm mr-2" onClick={() => handleEditExpense(index)}>Editar</button>
               <button className="btn btn-danger btn-sm" onClick={() => handleDeleteExpense(index)}>Deletar</button>
