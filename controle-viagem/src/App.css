@@ -1,38 +1,117 @@
-.App {
-  text-align: center;
+/* Estilo geral para o container */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* Título */
+h1 {
+  font-size: 2.5rem;
+  color: #343a40;
+  margin-bottom: 1rem;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+/* Formulário */
+.form-group {
+  margin-bottom: 1.5rem;
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap; /* Permite que os elementos sejam envolvidos para quebrar linha */
+}
+
+.form-control {
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  padding: 0.5rem;
+  font-size: 1rem;
+  flex: 1; /* Faz com que cada campo de formulário ocupe o máximo de espaço disponível */
+  margin-right: 10px; /* Espaçamento entre os campos */
+  margin-bottom: 10px; /* Espaçamento entre os campos */
+}
+
+select.form-control {
+  padding-right: 2rem;
+}
+
+/* Botões */
+.btn {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border-radius: 0.25rem;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+  border-color: #004085;
+}
+
+.btn-warning {
+  background-color: #ffc107;
+  border-color: #ffc107;
+  color: #212529;
+}
+
+.btn-warning:hover {
+  background-color: #e0a800;
+  border-color: #d39e00;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  border-color: #dc3545;
+  color: #fff;
+}
+
+.btn-danger:hover {
+  background-color: #c82333;
+  border-color: #bd2130;
+}
+
+/* Lista de despesas */
+.list-group-item {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  padding: 0.75rem 1.25rem;
+  border: 1px solid #dee2e6;
+  border-radius: 0.25rem;
+  margin-bottom: 0.5rem;
+  background-color: #fff;
 }
 
-.App-link {
-  color: #61dafb;
+.list-group-item div {
+  display: flex;
+  gap: 0.5rem;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+/* Total */
+#total {
+  margin-top: 2rem;
+  font-size: 1.25rem;
+}
+
+#total-origin,
+#total-destination {
+  font-weight: bold;
+}
+
+/* Media query para ajustar o layout em telas menores */
+@media (max-width: 768px) {
+  .form-group {
+    flex-direction: column; /* Altera para layout de coluna em telas menores */
   }
-  to {
-    transform: rotate(360deg);
+
+  .form-control {
+    margin-right: 0;
+    margin-bottom: 10px;
   }
 }
